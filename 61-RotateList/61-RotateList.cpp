@@ -1,44 +1,31 @@
-// Last updated: 3/18/2026, 3:02:13 PM
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class Solution {
-public:
-    ListNode* rotateRight(ListNode* head, int k) {
-        if(!head || !head -> next || k == 0) return head;
-
-        int len = 1;
-        ListNode* tail = head;
-
-        while(tail -> next) {
-            tail = tail -> next;
-            len++;
-        }
-
-        k = k % len;
-
-        if(k == 0) return head;
-
-        tail -> next = head;
-
-        int steps = len - k;
-
-        ListNode* newTail = head;
-
-        for(int i = 1; i < steps; i++) {
-            newTail = newTail -> next;
-        }
-        ListNode* newHead = newTail -> next;
-        newTail -> next = NULL;
-
-        return newHead;
-
-    }
-};
+// Last updated: 3/27/2026, 7:40:49 PM
+1class Solution {
+2public:
+3    ListNode* rotateRight(ListNode* head, int k) {
+4        if (!head || !head->next || k == 0) return head;
+5
+6        int cnt = 1;
+7        ListNode* tail = head;
+8
+9        while (tail->next) {
+10            tail = tail->next;
+11            cnt++;
+12        }
+13
+14        k %= cnt;
+15        if (k == 0) return head;
+16
+17        tail->next = head;
+18
+19        ListNode* temp = head;
+20
+21        for (int i = 1; i < cnt - k; i++) {
+22            temp = temp->next;
+23        }
+24
+25        ListNode* newHead = temp->next;
+26        temp->next = NULL;
+27
+28        return newHead;
+29    }
+30};
