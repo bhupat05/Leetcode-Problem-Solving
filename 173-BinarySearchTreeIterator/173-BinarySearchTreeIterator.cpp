@@ -1,24 +1,25 @@
-// Last updated: 3/30/2026, 4:24:32 PM
-1class Solution {
-2public:
-3    int lh(TreeNode* root) {
-4        if(!root) return 0;
-5        return 1 + lh(root->left);
-6    }
-7
-8    int rh(TreeNode* root) {
-9        if(!root) return 0;
-10        return 1 + rh(root->right);
-11    }
-12
-13    int countNodes(TreeNode* root) {
-14        if(!root) return 0;
-15
-16        int l = lh(root);
-17        int r = rh(root);
-18
-19        if(l == r) return (1 << l) - 1;
-20
-21        return 1 + countNodes(root->left) + countNodes(root->right);
-22    }
-23};
+// Last updated: 3/30/2026, 9:53:04 PM
+1/**
+2 * Definition for a binary tree node.
+3 * struct TreeNode {
+4 *     int val;
+5 *     TreeNode *left;
+6 *     TreeNode *right;
+7 *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+8 * };
+9 */
+10class Solution {
+11public:
+12    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+13        if(!root) return NULL;
+14
+15        if(root == p || root == q) return root;
+16
+17        TreeNode* l = lowestCommonAncestor(root -> left, p, q);
+18        TreeNode* r = lowestCommonAncestor(root -> right, p, q);
+19
+20        if(l && r) return root;
+21        if(l) return l;
+22        else return r;
+23    }
+24};
