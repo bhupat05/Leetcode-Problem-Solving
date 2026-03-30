@@ -1,25 +1,28 @@
-// Last updated: 3/30/2026, 9:53:04 PM
-1/**
-2 * Definition for a binary tree node.
-3 * struct TreeNode {
-4 *     int val;
-5 *     TreeNode *left;
-6 *     TreeNode *right;
-7 *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-8 * };
-9 */
-10class Solution {
-11public:
-12    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-13        if(!root) return NULL;
-14
-15        if(root == p || root == q) return root;
-16
-17        TreeNode* l = lowestCommonAncestor(root -> left, p, q);
-18        TreeNode* r = lowestCommonAncestor(root -> right, p, q);
-19
-20        if(l && r) return root;
-21        if(l) return l;
-22        else return r;
-23    }
-24};
+// Last updated: 3/31/2026, 1:33:37 AM
+1class Solution {
+2public:
+3    vector<int> rightSideView(TreeNode* root) {
+4        vector<int> r;
+5        if (!root) return r;
+6
+7        queue<TreeNode*> q;
+8        q.push(root);
+9
+10        while (!q.empty()) {
+11            int sz = q.size();
+12
+13            for (int i = 0; i < sz; i++) {
+14                TreeNode* nd = q.front();
+15                q.pop();
+16                
+17                if (i == sz - 1) {
+18                    r.push_back(nd->val);
+19                }
+20
+21                if (nd->left) q.push(nd->left);
+22                if (nd->right) q.push(nd->right);
+23            }
+24        }
+25        return r;
+26    }
+27};
