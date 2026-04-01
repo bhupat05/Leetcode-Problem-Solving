@@ -1,65 +1,52 @@
-// Last updated: 4/1/2026, 10:05:14 AM
+// Last updated: 4/1/2026, 10:17:55 AM
 1class Solution {
 2public:
 3    vector<int> survivedRobotsHealths(vector<int>& a, vector<int>& b, string c) {
 4        int n = a.size();
-5        vector<int> result(n, 0);
-6
-7        unordered_map<int, int> mp;
-8
-9        for(int i = 0; i < n; i++) {
-10            mp[a[i]] = i;
-11        }
+5        
+6        vector<pair<int,int>> v; 
+7        for(int i = 0; i < n; i++) {
+8            v.push_back({a[i], i});
+9        }
+10
+11        sort(v.begin(), v.end());
 12
-13        vector<pair<int, pair<int, char>>> v;
+13        stack<int> st; 
 14
-15        for (int i = 0; i < n; i++) {
-16            v.push_back({a[i], {b[i], c[i]}});
-17        }
-18
-19        sort(v.begin(), v.end());
-20
-21        vector<int> st; 
-22
-23        for(int i = 0; i < n; i++) {
-24            if(v[i].second.second == 'R') {
-25                st.push_back(i);  
-26            } 
-27            else {
-28                while(!st.empty() && v[i].second.first > 0) {
-29                    int j = st.back();
-30
-31                    if(v[j].second.first < v[i].second.first) {
-32                        st.pop_back();
-33                        v[i].second.first--;
-34                        v[j].second.first = 0;
-35                    }
-36                    else if(v[j].second.first == v[i].second.first) {
-37                        st.pop_back();
-38                        v[i].second.first = 0;
-39                        v[j].second.first = 0;
-40                        break;
-41                    }
-42                    else {
-43                        v[j].second.first--;
-44                        v[i].second.first = 0;
-45                        break;
-46                    }
-47                }
-48            }
-49        }
-50
-51        for(int i = 0; i < n; i++) {
-52            if(v[i].second.first > 0) {
-53                result[mp[v[i].first]] = v[i].second.first;
-54            }
-55        }
-56
-57        vector<int> ans;
-58        for(int i = 0; i < n; i++) {
-59            if(result[i] > 0) ans.push_back(result[i]);
-60        }
-61
-62        return ans;
-63    }
-64};
+15        for(auto &p : v) {
+16            int i = p.second;
+17
+18            if(c[i] == 'R') {
+19                st.push(i);
+20            } else {
+21                while(!st.empty() && b[i] > 0) {
+22                    int j = st.top();
+23
+24                    if(b[j] < b[i]) {
+25                        st.pop();
+26                        b[i]--;
+27                        b[j] = 0;
+28                    } 
+29                    else if(b[j] == b[i]) {
+30                        st.pop();
+31                        b[i] = 0;
+32                        b[j] = 0;
+33                        break;
+34                    } 
+35                    else {
+36                        b[j]--;
+37                        b[i] = 0;
+38                        break;
+39                    }
+40                }
+41            }
+42        }
+43
+44        vector<int> result;
+45        for(int i = 0; i < n; i++) {
+46            if(b[i] > 0) result.push_back(b[i]);
+47        }
+48
+49        return result;
+50    }
+51};
