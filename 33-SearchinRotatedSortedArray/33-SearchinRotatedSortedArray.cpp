@@ -1,29 +1,24 @@
-// Last updated: 4/13/2026, 12:08:50 AM
+// Last updated: 4/13/2026, 10:55:34 AM
 1class Solution {
 2public:
-3    int search(vector<int>& nums, int target) {
+3    int findMin(vector<int>& nums) {
 4        int l = 0;
 5        int r = nums.size() - 1;
 6
-7        while(l <= r) {
+7        while(l < r) {
 8            int mid = l + (r - l) / 2;
 9
-10            if(nums[mid] == target) return mid;
-11
-12            if(nums[l] <= nums[mid]) {
-13                if(target >= nums[l] && target < nums[mid]) {
-14                    r = mid - 1;
-15                } else {
-16                    l = mid + 1;
-17                }
-18            } else {
-19                if(target > nums[mid] && target <= nums[r]) {
-20                    l = mid + 1;
-21                } else {
-22                    r = mid - 1;
-23                }
-24            }
-25        } 
-26        return -1;
-27    } 
-28};
+10            if(nums[l] == nums[mid] && nums[mid] == nums[r]) {
+11                l++;
+12                r--;
+13            }
+14            else if(nums[mid] > nums[r]) {
+15                l = mid + 1;
+16            } 
+17            else {
+18                r = mid;
+19            }
+20        }
+21        return nums[l];  
+22    }
+23};
