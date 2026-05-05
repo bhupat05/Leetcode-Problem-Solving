@@ -1,4 +1,4 @@
-// Last updated: 3/27/2026, 7:40:49 PM
+// Last updated: 5/5/2026, 3:07:33 PM
 1class Solution {
 2public:
 3    ListNode* rotateRight(ListNode* head, int k) {
