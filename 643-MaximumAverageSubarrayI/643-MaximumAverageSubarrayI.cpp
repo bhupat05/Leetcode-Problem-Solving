@@ -1,24 +1,22 @@
-// Last updated: 3/18/2026, 2:26:56 PM
-class Solution {
-public:
-    double findMaxAverage(vector<int>& nums, int k) {
-        int n = nums.size();
-
-        double sum = 0;
-        double result = 0;
-
-        for(int i = 0; i < k; i++) {
-            sum += nums[i];
-        }
-        result = sum / k;
-        int l = 0;
-
-        for(int i = k; i < n; i++) {
-            sum += nums[i] - nums[l];
-            result = max(result, sum / k);
-            l++;
-        }
-        return result;
-        
-    }
-};
+// Last updated: 6/10/2026, 4:13:04 PM
+1class Solution {
+2public:
+3    int maxOperations(vector<int>& nums, int k) {
+4        sort(nums.begin(), nums.end());
+5        int l = 0;
+6        int r = nums.size() - 1;
+7        int cnt = 0;
+8        while(l < r) {
+9            if(nums[l] + nums[r] == k) {
+10                cnt++;
+11                l++;
+12                r--;
+13            } else if(nums[l] + nums[r] > k) {
+14                r--;
+15            } else {
+16                l++;
+17            }
+18        }
+19        return cnt;
+20    }
+21};
