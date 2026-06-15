@@ -1,16 +1,12 @@
-// Last updated: 6/14/2026, 5:47:27 PM
+// Last updated: 6/15/2026, 7:14:48 AM
 1class Solution {
 2public:
-3    int minCostClimbingStairs(vector<int>& cost) {
-4        int n = cost.size();
-5        int a = 0;
-6        int b = 0;
-7
-8        for(int i = 2; i <= n; i++) {
-9            int c = min(a + cost[i - 2], b + cost[i - 1]);
-10            a = b;
-11            b = c;
-12        }
-13        return b;
-14    }
-15};
+3    int singleNumber(vector<int>& nums) {
+4        int n = nums.size();
+5        int x = 0;
+6        for(int i = 0; i < n; i++) {
+7            x = x ^ nums[i];
+8        }
+9        return x;
+10    }
+11};
