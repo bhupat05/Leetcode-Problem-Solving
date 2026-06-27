@@ -1,4 +1,4 @@
-// Last updated: 6/27/2026, 10:32:20 PM
+// Last updated: 6/27/2026, 10:47:24 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,24 +12,40 @@
 11 */
 12class Solution {
 13public:
-14    vector<int> rightSideView(TreeNode* root) {
-15        vector<int> r;
-16        if(!root) return r;
-17        queue<TreeNode*> q;
-18        q.push(root);
-19        // r.push_back(root);
-20        while(!q.empty()) {
-21            int sz = q.size();
-22            for(int i = 0; i < sz; i++) {
-23                TreeNode* nd = q.front();
-24                q.pop();
-25                if(i == sz - 1) r.push_back(nd -> val);
+14    int maxLevelSum(TreeNode* root) {
+15        int maxSum = INT_MIN;
+16        int resultLevel = 0;
+17
+18        queue<TreeNode*> que;
+19        que.push(root);
+20
+21        int currLevel = 1;
+22
+23        while(!que.empty()) {
+24            int n = que.size();
+25            int sum = 0;
 26
-27                if(nd -> left) q.push(nd -> left);
-28                if(nd -> right) q.push(nd -> right);
-29            }
-30            
-31        }
-32        return r;
-33    }
-34};
+27            while(n--) {
+28                TreeNode* temp = que.front();
+29                que.pop();
+30
+31                sum += temp -> val;
+32
+33                if(temp -> left) {
+34                    que.push(temp -> left);
+35                }
+36
+37                if(temp -> right) {
+38                    que.push(temp -> right);
+39                }
+40            }
+41
+42            if(sum > maxSum) {
+43                maxSum = sum;
+44                resultLevel = currLevel;
+45            }
+46            currLevel++;
+47        }
+48        return resultLevel;
+49    }
+50};
