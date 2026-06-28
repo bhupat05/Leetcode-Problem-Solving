@@ -1,31 +1,34 @@
-// Last updated: 6/28/2026, 7:39:47 AM
-1class Solution {
-2    public String predictPartyVictory(String senate) {
-3
-4        int n = senate.length();
-5
-6        Queue<Integer> radiant = new LinkedList<>();
-7        Queue<Integer> dire = new LinkedList<>();
-8
-9        for (int i = 0; i < n; i++) {
-10            if (senate.charAt(i) == 'R')
-11                radiant.add(i);
-12            else
-13                dire.add(i);
-14        }
-15
-16        while (!radiant.isEmpty() && !dire.isEmpty()) {
-17
-18            int r = radiant.poll();
-19            int d = dire.poll();
+// Last updated: 6/28/2026, 11:40:31 AM
+1/**
+2 * Definition for singly-linked list.
+3 * public class ListNode {
+4 *     int val;
+5 *     ListNode next;
+6 *     ListNode() {}
+7 *     ListNode(int val) { this.val = val; }
+8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+9 * }
+10 */
+11class Solution {
+12    public ListNode oddEvenList(ListNode head) {
+13        if (head == null || head.next == null) {
+14            return head;
+15        }
+16
+17        ListNode odd = head;
+18        ListNode even = head.next;
+19        ListNode evenHead = even;
 20
-21            if (r < d) {
-22                radiant.add(r + n);
-23            } else {
-24                dire.add(d + n);
-25            }
-26        }
-27
-28        return radiant.isEmpty() ? "Dire" : "Radiant";
-29    }
-30}
+21        while (even != null && even.next != null) {
+22            odd.next = even.next;
+23            odd = odd.next;
+24
+25            even.next = odd.next;
+26            even = even.next;
+27        }
+28
+29        odd.next = evenHead;
+30
+31        return head;
+32    }
+33}
