@@ -1,38 +1,39 @@
-// Last updated: 7/7/2026, 10:36:25 PM
-1/**
-2 * Definition for singly-linked list.
-3 * struct ListNode {
-4 *     int val;
-5 *     ListNode *next;
-6 *     ListNode() : val(0), next(nullptr) {}
-7 *     ListNode(int x) : val(x), next(nullptr) {}
-8 *     ListNode(int x, ListNode *next) : val(x), next(next) {}
-9 * };
-10 */
-11class Solution {
-12public:
-13    ListNode* reverseKGroup(ListNode* head, int k) {
-14        if(!head || k == 1) return head;
-15        int cnt = 0;
-16        ListNode* temp = head;
-17        while(cnt < k) {
-18            if(!temp) return head;
-19            temp = temp -> next;
-20            cnt++;
-21        }
-22        
-23        ListNode* prev = nullptr;
-24        ListNode* curr = head;
-25        cnt = 0;
-26        while(cnt < k) {
-27            ListNode* nxt = curr -> next;
-28            curr -> next = prev;
-29            prev = curr;
-30            curr = nxt;
-31            cnt++;
-32        }
-33        head -> next = reverseKGroup(temp, k);
-34        return prev;
+// Last updated: 7/7/2026, 11:35:47 PM
+1class Solution {
+2public:
+3    bool check(string &p, int j) {
+4        
+5        for(int i = 0; i <= j; i++) {
+6            if(p[i] != '*') return false;
+7        }
+8        return true;
+9        
+10    }
+11    bool solve(string &s, string &p, int i, int j, vector<vector<int>>& dp) {
+12        if(i == -1 && j == -1) return true;
+13        if(j == 0 && p[j] == '*') return true;
+14        if(i == -1) {
+15            return check(p, j);
+16        }
+17        if(j == -1) return false;
+18
+19        if(dp[i][j] != -1) return dp[i][j];
+20
+21        if((s[i] == p[j]) || (p[j] == '?')) {
+22            return dp[i][j] = solve(s, p, i - 1, j - 1, dp);
+23        } else if(p[j] == '*') {
+24            
+25            return dp[i][j] = solve(s, p, i - 1, j, dp) || solve(s, p, i, j - 1, dp);
+26        } else {
+27            return false;
+28        }
+29        return false;
+30    }
+31    bool isMatch(string s, string p) {
+32        int m = s.size();
+33        int n = p.size();
+34        vector<vector<int>> dp(m, vector<int>(n, -1));
 35        
-36    }
-37};
+36        return solve(s, p, m - 1, n - 1, dp);
+37    }
+38};
