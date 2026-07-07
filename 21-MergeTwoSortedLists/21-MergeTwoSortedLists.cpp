@@ -1,28 +1,27 @@
-// Last updated: 3/18/2026, 3:03:03 PM
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class Solution {
-public:
-    ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
-        if(head1 == NULL || head2 == NULL){
-            return head1 == NULL?head2:head1;
-        }
-
-        if(head1->val <= head2->val){
-            head1->next = mergeTwoLists(head1->next,head2);
-            return head1;
-        }
-        else{
-            head2->next = mergeTwoLists(head2->next,head1);
-            return head2;
-        }
-    }
-};
+// Last updated: 7/7/2026, 9:45:57 PM
+1/**
+2 * Definition for singly-linked list.
+3 * struct ListNode {
+4 *     int val;
+5 *     ListNode *next;
+6 *     ListNode() : val(0), next(nullptr) {}
+7 *     ListNode(int x) : val(x), next(nullptr) {}
+8 *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+9 * };
+10 */
+11class Solution {
+12public:
+13    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+14        if(!l1) return l2;
+15        if(!l2) return l1;
+16
+17        if(l1 -> val < l2 -> val) {
+18            l1 -> next = mergeTwoLists(l1 -> next, l2);
+19            return l1;
+20        } else {
+21            l2 -> next = mergeTwoLists(l1, l2 -> next);
+22            return l2;
+23        }
+24
+25    }
+26};
