@@ -1,59 +1,59 @@
-// Last updated: 7/8/2026, 10:19:45 PM
+// Last updated: 7/8/2026, 10:21:51 PM
 1class Solution {
 2public:
-3    int dx[4] = {1, -1, 0, 0};
-4    int dy[4] = {0, 0, 1, -1};
-5    int orangesRotting(vector<vector<int>>& grid) {
-6        int m = grid.size();
-7        int n = grid[0].size();
-8        int ans = 0;
-9        queue<pair<int, int>> q;
-10        int cnt = 0;
-11        
-12        for(int i = 0; i < m; i++) {
-13            for(int j = 0; j < n; j++) {
-14                if(grid[i][j] == 2) {
-15                    q.push({i, j});
-16                } else if(grid[i][j] == 1) cnt++;
-17            }
-18        }
-19        
-20        if(cnt <= 0) return ans;
-21        
-22        while(!q.empty()) {
-23            int sz = q.size();
-24            if(cnt <= 0) return ans;
-25            
-26            while(sz--) {
-27                auto[i, j] = q.front();
-28                q.pop();
-29
-30                for(int k = 0; k < 4; k++) {
-31                    int ni = i + dx[k];
-32                    int nj = j + dy[k];
-33
-34                    if(ni < 0 || ni >= m || nj < 0 || nj >= n) continue;
+3    int orangesRotting(vector<vector<int>>& grid) {
+4        int m = grid.size();
+5        int n = grid[0].size();
+6
+7        queue<pair<int,int>> q;
+8        int fresh = 0;
+9
+10        int dx[] = {-1,1,0,0};
+11        int dy[] = {0,0,-1,1};
+12
+13        for(int i=0;i<m;i++){
+14            for(int j=0;j<n;j++){
+15                if(grid[i][j]==2)
+16                    q.push({i,j});
+17                else if(grid[i][j]==1)
+18                    fresh++;
+19            }
+20        }
+21
+22        if(fresh==0)
+23            return 0;
+24
+25        int minutes = 0;
+26
+27        while(!q.empty() && fresh){
+28
+29            int sz = q.size();
+30
+31            while(sz--){
+32
+33                auto [i,j] = q.front();
+34                q.pop();
 35
-36                    if(grid[ni][nj] != 1) continue;
+36                for(int k=0;k<4;k++){
 37
-38                    grid[ni][nj] = 2;
-39                    cnt--;
+38                    int ni = i + dx[k];
+39                    int nj = j + dy[k];
 40
-41                    q.push({ni, nj});
-42                }
+41                    if(ni<0 || ni>=m || nj<0 || nj>=n)
+42                        continue;
 43
-44            }
-45           
-46            ans++;
-47            
-48        }
-49
-50        // for(int i = 0; i < m; i++) {
-51        //     for(int j = 0; j < n; j++) {
-52        //         if(grid[i][j] == 1) return -1;
-53        //     }
-54        // }
-55        cout << cnt;
-56        return -1;
+44                    if(grid[ni][nj]!=1)
+45                        continue;
+46
+47                    grid[ni][nj]=2;
+48                    fresh--;
+49                    q.push({ni,nj});
+50                }
+51            }
+52
+53            minutes++;
+54        }
+55
+56        return fresh==0 ? minutes : -1;
 57    }
 58};
