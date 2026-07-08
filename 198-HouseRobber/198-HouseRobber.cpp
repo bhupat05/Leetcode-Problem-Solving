@@ -1,20 +1,16 @@
-// Last updated: 3/18/2026, 2:29:19 PM
-class Solution {
-public:
-    int rob(vector<int>& nums) {
-        int n = nums.size();
-        if (n == 0) return 0;
-        if (n == 1) return nums[0];
-
-        int a = nums[0];                   // dp[i-2]
-        int b = max(nums[0], nums[1]);     // dp[i-1]
-
-        for (int i = 2; i < n; i++) {
-            int c = max(a + nums[i], b);   // dp[i]
-            a = b;
-            b = c;
-        }
-
-        return b;  //  'b' always holds the best result up to the last house
-    }
-};
+// Last updated: 7/8/2026, 8:53:43 AM
+1class Solution {
+2public:
+3    int solve(vector<int>& nums, int i, vector<int>& dp) {
+4        if(i < 0) return 0;
+5
+6        if(dp[i] != -1) return dp[i];
+7
+8        return dp[i] = max(solve(nums, i - 1, dp), nums[i] + solve(nums, i - 2, dp));
+9    }
+10    int rob(vector<int>& nums) {
+11        int n = nums.size();
+12        vector<int> dp(n, - 1);
+13        return solve(nums, n - 1, dp);
+14    }
+15};
