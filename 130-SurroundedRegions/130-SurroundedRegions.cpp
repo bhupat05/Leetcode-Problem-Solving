@@ -1,40 +1,67 @@
-// Last updated: 7/9/2026, 9:43:35 AM
+// Last updated: 8/14/2026, 12:00:57 AM
 1class Solution {
-2public:
-3    int dir[5] = {0, 1, 0, -1, 0};
+2        vector<int> parent;
+3        vector<int> sz;
 4
-5    void dfs(vector<vector<char>>& board, int i, int j) {
-6        int m = board.size(), n = board[0].size();
+5        int find(int x) {
+6            if(parent[x] == x) return x;
 7
-8        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != 'O')
-9            return;
-10
-11        board[i][j] = '#';
-12
-13        for (int k = 0; k < 4; k++)
-14            dfs(board, i + dir[k], j + dir[k + 1]);
-15    }
-16
-17    void solve(vector<vector<char>>& board) {
-18        int m = board.size(), n = board[0].size();
+8            return parent[x] = find(parent[x]);
+9        }
+10        void unite(int a, int b) {
+11            a = find(a);
+12            b = find(b);
+13
+14            if(a == b) return;
+15
+16            if(sz[a] < sz[b]) {
+17                swap(a, b);
+18            }
 19
-20        for (int j = 0; j < n; j++) {
-21            dfs(board, 0, j);
-22            dfs(board, m - 1, j);
-23        }
-24
-25        for (int i = 0; i < m; i++) {
-26            dfs(board, i, 0);
-27            dfs(board, i, n - 1);
-28        }
+20            parent[b] = a;
+21            sz[a] += sz[b];
+22        }
+23public:
+24    void solve(vector<vector<char>>& board) {
+25        int m = board.size();
+26        int n = board[0].size();
+27        parent.resize( m * n + 1);
+28        sz.resize(m * n + 1, 1);
 29
-30        for (int i = 0; i < m; i++) {
-31            for (int j = 0; j < n; j++) {
-32                if (board[i][j] == 'O')
-33                    board[i][j] = 'X';
-34                else if (board[i][j] == '#')
-35                    board[i][j] = 'O';
-36            }
-37        }
-38    }
-39};
+30        int dummy = m * n;
+31
+32        for(int i = 0; i <= dummy; i++) {
+33            parent[i] = i;
+34        }
+35
+36        for(int i = 0; i < m; i++) {
+37            for(int j = 0; j < n; j++) {
+38                if(board[i][j] != 'O') continue;
+39
+40                int curr = i * n + j;
+41
+42                if(i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+43                    unite(curr, dummy);
+44                }
+45                if(i + 1 < m && board[i + 1][j] == 'O') {
+46                    unite(curr, (i + 1) * n + j);
+47                }
+48                if(j + 1 < n && board[i][j + 1] == 'O') {
+49                    unite(curr, i * n + (j + 1));
+50                }
+51            }
+52        }
+53
+54        for(int i = 0; i < m; i++) {
+55            for(int j = 0; j < n; j++) {
+56                if(board[i][j] == 'O') {
+57                    int curr = i * n + j;
+58                    if(find(curr) != find(dummy)) {
+59                        board[i][j] = 'X';
+60                    }
+61                }
+62            }
+63        }
+64        
+65    }
+66};
