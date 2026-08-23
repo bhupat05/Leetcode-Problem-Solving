@@ -1,43 +1,50 @@
-// Last updated: 7/17/2026, 3:09:20 PM
+// Last updated: 8/23/2026, 11:06:06 AM
 1class Solution {
 2public:
-3    double dfs( unordered_map<string, vector<pair<string, double>>>& mp, unordered_set<string>& st, string src, string dest) {
-4        if(src == dest) return 1.0;
-5
-6        st.insert(src);
-7
-8        for(auto v : mp[src]) {
-9            if(st.count(v.first)) continue;
-10
-11            double ans = dfs(mp, st, v.first, dest);
-12
-13            if(ans != -1) return ans * v.second;
-14        }
-15        return -1;
-16    }
-17    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
-18        int n = values.size();
-19        unordered_map<string, vector<pair<string, double>>> mp;
-20
-21        for(int i = 0; i < n; i++) {
-22            string a = equations[i][0];
-23            string b = equations[i][1];
-24            mp[a].push_back({b, values[i]});
-25            mp[b].push_back({a, 1.0 / values[i]});
-26        }
-27        vector<double> ans;
+3    unordered_set<string> st;
+4    double dfs(unordered_map<string , vector<pair<string, double>>>& adj, string src, string dest) {
+5        if(src == dest) return 1.00000;
+6        queue<pair<string, double>> q;
+7        q.push({src, 1.00000});
+8        st.insert(src);
+9
+10        while(!q.empty()) {
+11            auto [u, w] = q.front();
+12            q.pop();
+13
+14            for(auto [v, ans] : adj[u]) {
+15                if(st.count(v)) continue;
+16                if(dest == v) return ans * w;
+17                q.push({v, ans * w});
+18                st.insert(v);
+19            }
+20        }
+21        return -1.00000;
+22        
+23    }
+24    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+25        unordered_map<string , vector<pair<string, double>>> adj;
+26        int n = adj.size();
+27        int i = 0;
 28
-29        for(auto it : queries) {
-30            string a = it[0];
-31            string b = it[1];
-32
-33            if(!mp.count(a) || !mp.count(b)) {
-34                ans.push_back(-1.0);
-35            } else {
-36                unordered_set<string> st;
-37                ans.push_back(dfs(mp, st, a, b));
-38            }
-39        }
-40        return ans;
-41    }
-42};
+29        for(auto it : equations) {
+30            adj[it[0]].push_back({it[1], values[i]});
+31            adj[it[1]].push_back({it[0], 1 / values[i]});
+32            i++;
+33        }
+34        vector<double> ans;
+35
+36        for(auto it : queries) {
+37            if(!adj.count(it[0]) || (!adj.count(it[1]))) {
+38                ans.push_back(-1.00000);
+39            } else if(it[0] == it[1]) {
+40                ans.push_back(1.00000);
+41            } else {
+42                vector<int> vis(n, -1);
+43                ans.push_back(dfs(adj, it[0], it[1]));
+44                st.clear();
+45            }
+46        }
+47        return ans;
+48    }
+49};
