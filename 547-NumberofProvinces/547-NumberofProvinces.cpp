@@ -1,58 +1,65 @@
-// Last updated: 8/13/2026, 10:19:14 PM
+// Last updated: 8/24/2026, 7:19:24 PM
 1class DSU {
 2    vector<int> parent;
-3    vector<int> sz;
-4
-5public:
-6    DSU(int n) {
-7        parent.resize(n + 1);
-8        sz.resize(n + 1, 1);
-9
-10        for(int i = 0; i < n; i++) {
-11            parent[i] = i;
-12        }
-13    }
-14
-15    int find(int x) {
-16        if(parent[x] == x) return x;
-17
-18        return parent[x] = find(parent[x]);
-19    }
+3    vector<int> rank;
+4    int components;
+5
+6public:
+7    DSU(int n) {
+8        parent.resize(n);
+9        rank.resize(n, 1);
+10        components = n;
+11
+12        for (int i = 0; i < n; i++) {
+13            parent[i] = i;
+14        }
+15    }
+16
+17    int find(int x) {
+18        if (x == parent[x])
+19            return x;
 20
-21    void unite(int a, int b) {
-22        a = find(a);
-23        b = find(b);
-24
-25        if(a == b) return;
-26
-27        if(sz[a] < sz[b]) {
-28            swap(a, b);
-29        }
+21        return parent[x] = find(parent[x]);
+22    }
+23
+24    void unite(int a, int b) {
+25        a = find(a);
+26        b = find(b);
+27
+28        if (a == b)
+29            return;
 30
-31        parent[b] = a;
-32        sz[a] += sz[b];
-33    }
-34    
-35};
-36class Solution {
-37public:
-38    int findCircleNum(vector<vector<int>>& isConnected) {
-39        int n = isConnected.size();
-40        DSU dsu(n);
-41
-42        for(int i = 0; i < n; i++) {
-43            for(int j = 0; j < n; j++) {
-44                if(isConnected[i][j] == 1) {
-45                    dsu.unite(i, j);
-46                }
-47            }
-48        }
-49
-50        unordered_set<int> st;
+31        if (rank[a] < rank[b]) {
+32            swap(a, b);
+33        }
+34
+35        parent[b] = a;
+36        rank[a] += rank[b];
+37
+38        components--;
+39    }
+40
+41    int size() {
+42        return components;
+43    }
+44};
+45
+46
+47class Solution {
+48public:
+49    int findCircleNum(vector<vector<int>>& isConnected) {
+50        int n = isConnected.size();
 51
-52        for(int i = 0; i < n; i++) {
-53            st.insert(dsu.find(i));
-54        }
-55        return st.size();
-56    }
-57};
+52        DSU dsu(n);
+53
+54        for (int i = 0; i < n; i++) {
+55            for (int j = 0; j < n; j++) {
+56                if (isConnected[i][j] == 1) {
+57                    dsu.unite(i, j);
+58                }
+59            }
+60        }
+61
+62        return dsu.size();
+63    }
+64};
