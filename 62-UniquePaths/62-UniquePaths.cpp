@@ -1,15 +1,13 @@
-// Last updated: 7/8/2026, 10:47:04 AM
+// Last updated: 9/4/2026, 4:24:19 PM
 1class Solution {
 2public:
-3    int solve(int m, int n, vector<vector<int>>& dp) {
-4        if(m == 0 || n == 0) return 1;
-5        
-6        if(dp[m][n] != -1) return dp[m][n];
-7
-8        return dp[m][n] = solve(m - 1, n, dp) + solve(m, n - 1, dp);
-9    }
-10    int uniquePaths(int m, int n) {
-11        vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
-12        return solve(m - 1, n - 1, dp);   
-13    }
-14};
+3    int uniquePaths(int m, int n) {
+4        vector<int> dp(n, 1);
+5        for(int i = 1; i < m; i++) {
+6            for(int j = 1; j < n; j++) {
+7                dp[j] += dp[j - 1];
+8            }
+9        }
+10        return dp[n - 1];
+11    }
+12};
