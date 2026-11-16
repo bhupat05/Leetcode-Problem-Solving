@@ -1,37 +1,31 @@
-// Last updated: 8/8/2026, 3:46:45 PM
+// Last updated: 11/17/2026, 1:26:17 AM
 1class Solution {
 2    public List<List<Integer>> threeSum(int[] nums) {
 3        int n = nums.length;
-4        Arrays.sort(nums);
-5        List<List<Integer>> ans =new ArrayList<>();
+4        List<List<Integer>> ans = new ArrayList<>();
+5        Arrays.sort(nums);
 6
 7        for(int i = 0; i < n; i++) {
-8            int l = i + 1;
-9            int r = n - 1;
-10            if(i > 0 && nums[i] == nums[i - 1]) continue;
-11
-12            while(l < r) {
-13
-14               
-15                int sum = nums[l] + nums[r] + nums[i];
-16
-17                if(sum == 0) {
-18                    List<Integer> temp = new ArrayList<>();
-19                    temp.add(nums[l]);
-20                    temp.add(nums[r]);
-21                    temp.add(nums[i]);
-22                    ans.add(temp);
-23                    l++;
-24                    r--;
-25                    while(l < r && nums[l] == nums[l - 1]) l++;
-26                    while(l < r && nums[r] == nums[r + 1]) r--;
-27                } else if(sum < 0) {
-28                    l++;
-29                } else {
-30                    r--;
-31                }
-32            }
-33        }
-34        return ans;
-35    }
-36}
+8            if(i > 0 && nums[i] == nums[i - 1]) continue;
+9
+10            int l = i + 1;
+11            int r = n - 1;
+12
+13            while(l < r) {
+14                int sum = nums[i] + nums[l] + nums[r];
+15                if(sum < 0) {
+16                    l++;
+17                } else if(sum > 0) {
+18                    r--;
+19                } else {
+20                    ans.add(Arrays.asList(nums[i], nums[l], nums[r]));
+21                    l++;
+22                    r--;
+23                    while(l < r && nums[l] == nums[l - 1]) l++;
+24                    while(l < r && nums[r] == nums[r + 1]) r--;
+25                }
+26            }
+27        }
+28        return ans;
+29    }
+30}
