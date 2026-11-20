@@ -1,37 +1,37 @@
-// Last updated: 8/8/2026, 6:57:08 PM
+// Last updated: 11/20/2026, 3:18:51 PM
 1class Solution {
 2    public String minWindow(String s, String t) {
 3        int m = s.length();
 4        int n = t.length();
-5        if(n > m) return "";
-6        int[] arr = new int[256];
-7        int mini = (int)1e5;
-8        int l = 0;
-9        int req = 0;
-10        int start = -1;
-11
-12        for(int i = 0; i < n; i++) {
-13            arr[t.charAt(i)]++;
-14            req++;
-15        }
-16
-17        for(int i = 0; i < m; i++) {
-18            if(arr[s.charAt(i)] > 0) {
-19                req--;
-20            }
-21            arr[s.charAt(i)]--;
-22
-23            while(req == 0) {
-24                if((i - l + 1) < mini) {
-25                    mini = i - l + 1;
-26                    start = l;
-27                }
-28
-29                arr[s.charAt(l)]++;
-30                if(arr[s.charAt(l)] > 0) req++;
-31                l++;
-32            }
-33        }
-34        return start == -1 ? "" : s.substring(start, start + mini);
+5        int[] arr1 = new int[256];
+6        int[] arr2 = new int[256];
+7        int req = n;
+8        for(char c : t.toCharArray()) {
+9            arr1[c]++;
+10        }
+11        int left = 0;
+12        int result = Integer.MAX_VALUE; 
+13        int start = 0;
+14
+15        for(int i = 0; i < m; i++) {
+16            if(arr2[s.charAt(i)] < arr1[s.charAt(i)]) {
+17                req--;
+18            }
+19            arr2[s.charAt(i)]++;
+20
+21            while(req <= 0) {
+22                if(result > (i - left + 1)) {
+23                    result = i - left + 1;
+24                    start = left;
+25                }
+26                if(arr1[s.charAt(left)] > 0 && arr2[s.charAt(left)] <= arr1[s.charAt(left)]) {
+27                    req++;
+28                }
+29                arr2[s.charAt(left)]--;
+30                left++;
+31            }
+32        }
+33        return result == Integer.MAX_VALUE ? "" : s.substring(start, start + result);
+34
 35    }
 36}
